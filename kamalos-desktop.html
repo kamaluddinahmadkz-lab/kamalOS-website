@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kamalOS 1.0 Desktop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            background: #000;
+        }
+        
+        /* Desktop Wallpaper */
+        .desktop {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-image: url('icons/wallpaper.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 28px;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            color: white;
+            font-size: 13px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .apple-logo {
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .menu-item {
+            cursor: pointer;
+            padding: 3px 10px;
+            border-radius: 4px;
+            transition: background 0.2s;
+            font-weight: 500;
+        }
+        
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .menu-item.active {
+            font-weight: 700;
+        }
+        
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .status-icon {
+            cursor: pointer;
+            padding: 3px 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+            font-size: 14px;
+        }
+        
+        .status-icon:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .time {
+            font-weight: 600;
+            min-width: 140px;
+            text-align: right;
+            letter-spacing: 0.3px;
+        }
+        
+        /* Desktop Icons - You add your own! */
+        .desktop-icons {
+            position: absolute;
+            top: 50px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 10px;
+            transition: background 0.2s;
+            max-width: 100px;
+        }
+        
+        .desktop-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .desktop-icon.selected {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .icon-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            object-fit: cover;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .icon-label {
+            color: white;
+            font-size: 13px;
+            text-align: center;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+            font-weight: 600;
+        }
+        
+        /* Dock */
+        .dock {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-radius: 22px;
+            padding: 6px 12px;
+            display: flex;
+            gap: 6px;
+            align-items: flex-end;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            z-index: 900;
+        }
+        
+        .dock-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dock-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .dock-icon:hover {
+            transform: translateY(-15px) scale(1.15);
+        }
+        
+        .dock-icon.active::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        }
+        
+        .dock-divider {
+            width: 2px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.35);
+            margin: 0 6px;
+            border-radius: 2px;
+        }
+        
+        /* Window */
+        .window {
+            position: absolute;
+            background: rgba(245, 245, 247, 0.92);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-radius: 12px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            resize: both;
+            min-width: 400px;
+            min-height: 300px;
+        }
+        
+        .window.active {
+            display: flex;
+            z-index: 800;
+        }
+        
+        .window.maximized {
+            top: 28px !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: calc(100vh - 28px) !important;
+            border-radius: 0;
+        }
+        
+        .window-titlebar {
+            height: 44px;
+            background: rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            cursor: move;
+            user-select: none;
+        }
+        
+        .traffic-lights {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .traffic-light {
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .traffic-light.close {
+            background: linear-gradient(135deg, #ff6159 0%, #ff5147 100%);
+        }
+        
+        .traffic-light.minimize {
+            background: linear-gradient(135deg, #ffbd2e 0%, #ffab00 100%);
+        }
+        
+        .traffic-light.maximize {
+            background: linear-gradient(135deg, #28ca42 0%, #1fb932 100%);
+        }
+        
+        .traffic-light:hover {
+            filter: brightness(1.1);
+            transform: scale(1.05);
+        }
+        
+        .window-title {
+            flex: 1;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1d1d1f;
+            letter-spacing: 0.2px;
+        }
+        
+        .window-content {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            color: #1d1d1f;
+            background: rgba(255, 255, 255, 0.6);
+        }
+        
+        .window-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .window-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        
+        .window-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        
+        .window-content h2 {
+            margin-bottom: 20px;
+            color: #667eea;
+            font-size: 28px;
+        }
+        
+        .window-content h3 {
+            margin-top: 25px;
+            margin-bottom: 12px;
+            color: #667eea;
+            font-size: 20px;
+        }
+        
+        .window-content p {
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #424245;
+        }
+        
+        /* File Manager */
+        .file-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .file-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .file-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .file-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+        
+        .file-name {
+            font-size: 13px;
+            text-align: center;
+            color: #1d1d1f;
+        }
+        
+        /* Terminal */
+        .terminal-content {
+            background: rgba(30, 30, 30, 0.95);
+            color: #00ff00;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+            height: 100%;
+            overflow-y: auto;
+        }
+        
+        .terminal-line {
+            margin-bottom: 8px;
+        }
+        
+        .terminal-prompt {
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        /* Browser */
+        .browser-bar {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .browser-button {
+            padding: 6px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.2s;
+        }
+        
+        .browser-button:hover {
+            background: rgba(102, 126, 234, 0.2);
+        }
+        
+        .browser-url {
+            flex: 1;
+            padding: 8px 15px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
+        }
+        
+        .browser-content {
+            padding: 0;
+            background: white;
+        }
+        
+        .browser-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Text Editor */
+        .editor-toolbar {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 8px;
+        }
+        
+        .editor-button {
+            padding: 6px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .editor-button:hover {
+            background: rgba(102, 126, 234, 0.2);
+        }
+        
+        .editor-textarea {
+            width: 100%;
+            height: 100%;
+            border: none;
+            padding: 20px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            resize: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: #1d1d1f;
+        }
+        
+        .editor-textarea:focus {
+            outline: none;
+        }
+        
+        /* Calculator */
+        .calculator {
+            background: rgba(50, 50, 52, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .calc-display {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            padding: 20px;
+            text-align: right;
+            font-size: 36px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: 300;
+            min-height: 60px;
+        }
+        
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .calc-button {
+            padding: 20px;
+            background: rgba(99, 99, 102, 0.9);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        
+        .calc-button:hover {
+            background: rgba(120, 120, 122, 0.9);
+            transform: scale(1.05);
+        }
+        
+        .calc-button.operator {
+            background: rgba(255, 159, 10, 0.9);
+        }
+        
+        .calc-button.operator:hover {
+            background: rgba(255, 169, 30, 0.9);
+        }
+        
+        .calc-button.zero {
+            grid-column: span 2;
+        }
+        
+        /* Settings */
+        .settings-section {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+        
+        .settings-label {
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+        
+        .settings-value {
+            color: #667eea;
+            font-weight: 500;
+        }
+        
+        /* Music Player */
+        .music-player {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .album-art {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .song-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1d1d1f;
+        }
+        
+        .artist-name {
+            font-size: 16px;
+            color: #86868b;
+            margin-bottom: 30px;
+        }
+        
+        .music-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .music-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.15);
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .music-button:hover {
+            background: rgba(102, 126, 234, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .music-button.play {
+            width: 60px;
+            height: 60px;
+            background: #667eea;
+            color: white;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- INSTRUCTIONS COMMENT:
+    
+    To add your own icons, create a folder called "icons" next to this HTML file.
+    
+    Put these image files in the icons folder:
+    - wallpaper.jpg (desktop background)
+    - finder.png (Finder app icon)
+    - terminal.png (Terminal app icon)
+    - browser.png (Browser app icon)
+    - editor.png (Text Editor app icon)
+    - calculator.png (Calculator app icon)
+    - settings.png (Settings app icon)
+    - music.png (Music app icon)
+    - about.png (About kamalOS app icon)
+    - downloads.png (Downloads folder icon)
+    - trash.png (Trash icon)
+    
+    Your folder structure should look like:
+    kamalos-desktop.html
+    icons/
+      ├── wallpaper.jpg
+      ├── finder.png
+      ├── terminal.png
+      ├── browser.png
+      ├── editor.png
+      ├── calculator.png
+      ├── settings.png
+      ├── music.png
+      ├── about.png
+      ├── downloads.png
+      └── trash.png
+    
+    -->
+    
+    <div class="desktop">
+        <!-- Top Menu Bar -->
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <div class="apple-logo">kamalOS</div>
+                <div class="menu-item active">Finder</div>
+                <div class="menu-item">File</div>
+                <div class="menu-item">Edit</div>
+                <div class="menu-item">View</div>
+                <div class="menu-item">Go</div>
+                <div class="menu-item">Window</div>
+                <div class="menu-item">Help</div>
+            </div>
+            <div class="top-bar-right">
+                <div class="status-icon" title="Battery">🔋 100%</div>
+                <div class="status-icon" title="Wi-Fi">📶</div>
+                <div class="status-icon" title="Volume">🔊</div>
+                <div class="time" id="clock"></div>
+            </div>
+        </div>
+        
+        <!-- Desktop Icons (empty - user adds their own) -->
+        <div class="desktop-icons" id="desktopIcons">
+            <!-- Add desktop icons like this:
+            <div class="desktop-icon" onclick="openWindow('about')">
+                <img src="icons/about.png" class="icon-img" alt="About">
+                <div class="icon-label">About kamalOS</div>
+            </div>
+            -->
+        </div>
+        
+        <!-- Finder Window -->
+        <div class="window" id="finder-window" style="width: 800px; height: 550px; top: 80px; left: 100px;">
+            <div class="window-titlebar">
+                <div class="traffic-lights">
+                    <div class="traffic-light close" onclick="closeWindow('finder')"></div>
+                    <div class="traffic-light minimize" onclick="minimizeWindow('finder')"></div>
+                    <div class="traffic-light maximize" onclick="toggleMaximize('finder')"></div>
+                </div>
+                <div class="window-title">Finder</div>
+                <div style="width: 80px;"></div>
+            </div>
+            <div class="window-content">
+                <h2>📁 My Files</h2>
+                <div class="file-list">
+                    <div class="file-item" ondblclick="alert('Opening Documents...')">
+                        <div class="file-icon">📄</div>
+                        <div class="file-name">Documents</div>
+                    </div>
+                    <div class="file-item" ondblclick="alert('Opening Downloads...')">
+                        <div class="file-icon">⬇️</div>
+                        <div class="file-name">Downloads</div>
+                    </div>
+                    <div class="file-item" ondblclick="alert('Opening Pictures...')">
+                        <div class="file-icon">🖼️</div>
+                        <div class="file-name">Pictures</div>
+                    </div>
+                    <div class="file-item" ondblclick="alert('Opening Music...')">
+                        <div class="file-icon">🎵</div>
+                        <div class="file-name">Music</div>
+                    </div>
+                    <div class="file-item" ondblclick="alert('Opening Videos...')">
+                        <div class="file-icon">🎬</div>
+                        <div class="file-name">Videos</div>
+                    </div>
+                    <div class="file-item" ondblclick="alert('Opening Desktop...')">
+                        <div class="file-icon">🖥️</div>
+                        <div class="file-name">Desktop</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Terminal Window -->
+        <div class="window" id="terminal-window" style="width: 700px; height: 450px; top: 100px; left: 150px;">
+            <div class="window-titlebar">
+                <div class="traffic-lights">
+                    <div class="traffic-light close" onclick="closeWindow('terminal')"></div>
+                    <div class="traffic-light minimize" onclick="minimizeWindow('terminal')"></div>
+                    <div class="traffic-light maximize" onclick="toggleMaximize('terminal')"></div>
+                </div>
+                <div class="window-title">Terminal</div>
+                <div style="width: 80px;"></div>
+            </div>
+            <div class="window-content" style="padding: 0;">
+                <div class="terminal-content">
+                    <div class="terminal-line"><span class="terminal-prompt">kamal@kamalOS:~$</span> uname -r</div>
+                    <div class="terminal-line">6.8.0-kamalOS</div>
+                    <div class="terminal-line"><span class="terminal-prompt">kamal@kamalOS:~$</span> cat /etc/os-release</div>
+                    <div class="terminal-line">NAME="kamalOS"</div>
+                    <div class="terminal-line">VERSION="1.0 (Big Sur Edition)"</div>
+                    <div class="terminal-line">ID=kamalos</div>
+                    <div class="terminal-line">PRETTY_NAME="kamalOS 1.0"</div>
+                    <div class="terminal-line"><span class="terminal-prompt">kamal@kamalOS:~$</span> neofetch</div>
+                    <div class="terminal-line" style="color: #667eea; font-weight: bold; margin-top: 10px;">
+                        ██╗  ██╗ █████╗ ███╗   ███╗ █████╗ ██╗      ██████╗ ███████╗<br>
+                        ██║ ██╔╝██╔══██╗████╗ ████║██╔══██╗██║     ██╔═══██╗██╔════╝<br>
+                        █████╔╝ ███████║██╔████╔██║███████║██║     ██║   ██║███████╗<br>
+                        ██╔═██╗ ██╔══██║██║╚██╔╝██║██╔══██║██║     ██║   ██║╚════██║<br>
+                        ██║  ██╗██║  ██║██║ ╚═╝ ██║██║  ██║███████╗╚██████╔╝███████║<br>
+                        ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚══════╝
+                    </div>
+                    <div class="terminal-line" style="margin-top: 10px;"><span style="color: #667eea;">OS:</span> kamalOS 1.0</div>
+                    <div class="terminal-line"><span style="color: #667eea;">Kernel:</span> 6.8.0-kamalOS</div>
+                    <div class="terminal-line"><span style="color: #667eea;">Shell:</span> bash 5.2</div>
+                    <div class="terminal-line"><span style="color: #667eea;">DE:</span> GNOME 46</div>
+                    <div class="terminal-line"><span style="color: #667eea;">Theme:</span> WhiteSur-Dark</div>
+                    <div class="terminal-line"><span style="color: #667eea;">Built by:</span> Kamal ❤️</div>
+                    <div class="terminal-line" style="margin-top: 10px;"><span class="terminal-prompt">kamal@kamalOS:~$</span> <span style="animation: blink 1s infinite;">█</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Browser Window -->
+        <div class="window" id="browser-window" style="width: 900px; height: 600px; top: 60px; left: 200px;">
+            <div class="window-titlebar">
+                <div class="traffic-lights">
+                    <div class="traffic-light close" onclick="closeWindow('browser')"></div>
+                    <div class="traffic-light minimize" onclick="minimizeWindow('browser')"></div>
+                    <div class="traffic-light maximize" onclick="toggleMaximize('browser')"></div>
+                </div>
+                <div class="window-title">Safari</div>
+                <div style="width: 80px;"></div>
+            </div>
+            <div class="browser-content">
+                <div class="browser-bar">
+                    <button class="browser-button" onclick="document.getElementById('browserFrame').src = document.getElementById('browserFrame').src">↻</button>
+                    <input class="browser-url" id="browserUrl" value="https://kamaluddinahmadkz-lab.github.io/kamalOS-website/" readonly>
+                    <button class="browser-button" onclick="alert('Bookmarked!')">⭐</button>
+                </div>
+                <iframe id="browserFrame" class="browser-iframe" src="https://kamaluddinahmadkz-lab.github.io/kamalOS-website/"></iframe>
+            </div>
+        </div>
+        
+        <!-- Text Editor Window -->
+        <div class="window" id="editor-window" style="width: 750px; height: 500px; top: 90px; left: 180px;">
+            <div class="window-titlebar">
+                <div class="traffic-lights">
+                    <div class="traffic-light close" onclick="closeWindow('editor')"></div>
+                    <div class="traffic-light minimize" onclick="minimizeWindow('editor')"></div>
+                    <div class="traffic-light maximize" onclick="toggleMaximize('editor')"></div>
+                </div>
+                <div class="window-title">Text Editor - Untitled</div>
+                <div style="width: 80px;"></div>
+            </div>
+            <div class="window-content" style="padding: 0; display: flex; flex-direction: column;">
+                <div class="editor-toolbar">
+                    <button class="editor-button" onclick="document.getElementById('editorText').value = ''">New</button>
+                    <button class="editor-button" onclick="alert('File saved!')">Save</button>
+                    <button class="editor-button" onclick="document.getElementById('editorText').value = ''">Clear</button>
+                </div>
+                <textarea id="editorText" class="editor-textarea" placeholder="Start typing...">Welcome to kamalOS Text Editor!
+
+This is a fully functional text editor built into kamalOS.
+
+System Information:
+- OS: kamalOS 1.0
+- Kernel: Linux 6.8.0-kamalOS
+- Built by: Kamal, age 11
+
+You can type anything here!</textarea>
+            </div>
+        </div>
+        
+        <!-- Calculator Window -->
+        <div class="window" id="calculator-window" style="width: 340px; height: 480px; top: 120px; left: 250px;">
+            <div class="window-titlebar">
+                <div class="traffic-lights">
+                    <div class="traffic-light close" onclick="closeWindow('calculator')"></div>
+                    <div class="traffic-light minimize" onclick="minimizeWindow('calculator')"></div>
+                    <div class="traffic-light maximize" onclick="toggleMaximize('calculator')"></div>
+                </div>
+                <div class="window-title">Calculator</div>
+                <div style="width: 80px;"></div>
+            </div>
+            <div class="window-content" style="padding: 0;">
+                <div class="calculator">
+                    <div class="calc-display" id="calcDisplay">0</div>
+                    <div class="calc-buttons">
+                        <button class="calc-button" onclick="calcClear()">C</button>
+                        <button class="calc-button" onclick="calcInput('+/-')">+/-</button>
+                        <button class="calc-button" onclick="calcInput('%')">%</button>
+                        <button class="calc-button operator" onclick="calcInput('÷')">÷</button>
+                        
+                        <button class="calc-button" onclick="calcInput('7')">7</button>
+                        <button class="calc-button" onclick="calcInput('8')">8</button>
+                        <button class="calc-button" onclick="calcInput('9')">9</button>
+                        <button class="calc-button operator" onclick="calcInput('×')">×</button>
+                        
+                        <button class="calc-button" onclick="calcInput('4')">4</button>
+                        <button class="calc-button" onclick="calcInput('5')">5</button>
+                        <button class="calc-button" onclick="calcInput('6')">6</button>
+                        <button class="calc-button operator" onclick="calcInput('-')">−</button>
+                        
+                        <button class="calc-button" onclick="calcInput('1')">1</button>
+                        <button class="calc-button" onclick="calcInput('2')">2</button>
+                        <button class="calc-button" onclick="calcInput('3')">3</button>
+                        <button class="calc-button operator" onclick="calcInput('+')">+</button>
+                        
+                        <button class="calc-button zero" onclick="calcInput('0')">0</button>
+                        <button class="calc-button" onclick="calcInput('.')">.</button>
+                        <button class="calc-button operator" onclick="calcEquals()">=</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings Window -->
+        <div class="window" id="settings-window" style="width: 700px; height: 550px; top: 70px; left: 220px;">
+            <div class="window-titlebar">
+                <div class="traffic-lights">
+                    <div class="traffic-light close" onclick="closeWindow('settings')"></div>
+                    <div class="traffic-light minimize" onclick="minimizeWindow('settings')"></div>
+                    <div class="traffic-light maximize" onclick="toggleMaximize('settings')"></div>
+                </div>
+                <div class="window-title">System Settings</div>
+                <div style="width: 80px;"></div>
+            </div>
+            <div class="window-content">
+                <h2>⚙️ System Settings</h2>
+                
+                <div class="settings-section">
+                    <h3>About This kamalOS</h3>
+                    <div class="settings-item">
+                        <div class="settings-label">Operating System</div>
+                        <div class="settings-value">kamalOS 1.0</div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">Kernel Version</div>
+                        <div class="settings-value">6.8.0-kamalOS</div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">Base System</div>
+                        <div class="settings-value">Ubuntu 24.04 LTS</div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">Desktop Environment</div>
+                        <div class="settings-value">GNOME 46</div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Appearance</h3>
+                    <div class="settings-item">
+                        <div class="settings-label">Theme</div>
+                        <div class="settings-value">WhiteSur-Dark</div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">Icons</div>
+                        <div class="settings-value">WhiteSur Icons</div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">Window Buttons</div>
+                        <div class="settings-value">Traffic Lights (macOS Style)</div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Extensions</h3>
+                    <div class="settings-item">
+                        <div class="settings-label">Dash to Dock</div>
+                        <div class="settings-value">✓ Enabled</div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">Blur my Shell</div>
+                        <div class="settings-value">✓ Enabled</div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">User Themes</div>
+                        <div class="settings-value">✓ Enabled</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Music Player Window -->
+        <div class="window" id="music-window" style="width: 500px; height: 550px; top: 100px; left: 300px;">
+            <div class="window-titlebar">
+                <div class="traffic-lights">
+                    <div class="traffic-light close" onclick="closeWindow('music')"></div>
+                    <div class="traffic-light minimize" onclick="minimizeWindow('music')"></div>
+                    <div class="traffic-light maximize" onclick="toggleMaximize('music')"></div>
+                </div>
+                <div class="window-title">Music</div>
+                <div style="width: 80px;"></div>
+            </div>
+            <div class="window-content">
+                <div class="music-player">
+                    <div class="album-art">🎵</div>
+                    <div class="song-title">Welcome to kamalOS</div>
+                    <div class="artist-name">System Sounds</div>
+                    <div class="music-controls">
+                        <button class="music-button">⏮</button>
+                        <button class="music-button play" onclick="alert('▶️ Now Playing!')">▶️</button>
+                        <button class="music-button">⏭</button>
+                    </div>
+                    <p style="margin-top: 40px; color: #86868b; font-size: 14px;">
+                        Music player is ready to play your favorite tunes!<br>
+                        kamalOS supports all major audio formats.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- About kamalOS Window -->
+        <div class="window" id="about-window" style="width: 650px; height: 500px; top: 110px; left: 280px;">
+            <div class="window-titlebar">
+                <div class="traffic-lights">
+                    <div class="traffic-light close" onclick="closeWindow('about')"></div>
+                    <div class="traffic-light minimize" onclick="minimizeWindow('about')"></div>
+                    <div class="traffic-light maximize" onclick="toggleMaximize('about')"></div>
+                </div>
+                <div class="window-title">About kamalOS</div>
+                <div style="width: 80px;"></div>
+            </div>
+            <div class="window-content">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h1 style="font-size: 52px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;">kamalOS</h1>
+                    <p style="font-size: 20px; color: #667eea; margin-top: 10px;">Version 1.0 - Big Sur Edition</p>
+                </div>
+                
+                <div style="background: rgba(102, 126, 234, 0.1); padding: 25px; border-radius: 12px; margin-bottom: 20px;">
+                    <p><strong>Built by:</strong> Kamal, age 11 ❤️</p>
+                    <p><strong>Kernel:</strong> Linux 6.8.0-kamalOS (custom compiled)</p>
+                    <p><strong>Based on:</strong> Ubuntu 24.04 LTS</p>
+                    <p><strong>Desktop:</strong> GNOME 46 with Big Sur theme</p>
+                </div>
+                
+                <h3>What makes kamalOS special?</h3>
+                <ul style="margin-left: 25px; line-height: 2;">
+                    <li>Custom-built Linux kernel from source</li>
+                    <li>Beautiful macOS Big Sur design</li>
+                    <li>Blur effects and glass transparency</li>
+                    <li>Traffic light window buttons</li>
+                    <li>macOS-style dock with animations</li>
+                    <li>WhiteSur theme and icons</li>
+                </ul>
+                
+                <p style="margin-top: 25px; text-align: center; color: #86868b; font-size: 13px;">
+                    © 2026 kamalOS Project • Open Source • Free Forever
+                </p>
+            </div>
+        </div>
+        
+        <!-- Dock (empty - user adds their own icons) -->
+        <div class="dock" id="dock">
+            <!-- Add dock icons like this:
+            <div class="dock-icon" data-window="finder" onclick="openWindow('finder')">
+                <img src="icons/finder.png" alt="Finder">
+            </div>
+            -->
+        </div>
+    </div>
+    
+    <script>
+        // Clock update
+        function updateClock() {
+            const now = new Date();
+            const options = { 
+                weekday: 'short', 
+                month: 'short', 
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            };
+            document.getElementById('clock').textContent = now.toLocaleDateString('en-US', options).replace(',', '');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+        
+        // Window management
+        let activeWindow = null;
+        
+        function openWindow(windowId) {
+            const window = document.getElementById(windowId + '-window');
+            if (window) {
+                window.classList.add('active');
+                bringToFront(window);
+                const dockIcon = document.querySelector(`[data-window="${windowId}"]`);
+                if (dockIcon) dockIcon.classList.add('active');
+            }
+        }
+        
+        function closeWindow(windowId) {
+            const window = document.getElementById(windowId + '-window');
+            if (window) {
+                window.classList.remove('active');
+                window.classList.remove('maximized');
+                const dockIcon = document.querySelector(`[data-window="${windowId}"]`);
+                if (dockIcon) dockIcon.classList.remove('active');
+            }
+        }
+        
+        function minimizeWindow(windowId) {
+            const window = document.getElementById(windowId + '-window');
+            if (window) {
+                window.style.display = 'none';
+                setTimeout(() => {
+                    window.style.display = 'flex';
+                    window.classList.remove('active');
+                }, 10);
+            }
+        }
+        
+        function toggleMaximize(windowId) {
+            const window = document.getElementById(windowId + '-window');
+            if (window) {
+                window.classList.toggle('maximized');
+            }
+        }
+        
+        function bringToFront(window) {
+            document.querySelectorAll('.window').forEach(w => {
+                w.style.zIndex = '800';
+            });
+            window.style.zIndex = '850';
+        }
+        
+        // Make windows draggable
+        document.querySelectorAll('.window').forEach(window => {
+            const titlebar = window.querySelector('.window-titlebar');
+            let isDragging = false;
+            let currentX, currentY, initialX, initialY;
+            
+            titlebar.addEventListener('mousedown', (e) => {
+                if (e.target.classList.contains('traffic-light')) return;
+                if (window.classList.contains('maximized')) return;
+                isDragging = true;
+                initialX = e.clientX - window.offsetLeft;
+                initialY = e.clientY - window.offsetTop;
+                bringToFront(window);
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    e.preventDefault();
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                    window.style.left = currentX + 'px';
+                    window.style.top = Math.max(28, currentY) + 'px';
+                }
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+            
+            window.addEventListener('mousedown', () => {
+                bringToFront(window);
+            });
+        });
+        
+        // Calculator logic
+        let calcValue = '0';
+        let calcOperator = null;
+        let calcPrevValue = null;
+        
+        function calcInput(value) {
+            if (value === '+/-') {
+                calcValue = String(-parseFloat(calcValue));
+            } else if (value === '%') {
+                calcValue = String(parseFloat(calcValue) / 100);
+            } else if (['+', '-', '×', '÷'].includes(value)) {
+                calcPrevValue = parseFloat(calcValue);
+                calcOperator = value;
+                calcValue = '0';
+            } else {
+                if (calcValue === '0') {
+                    calcValue = value;
+                } else {
+                    calcValue += value;
+                }
+            }
+            document.getElementById('calcDisplay').textContent = calcValue;
+        }
+        
+        function calcEquals() {
+            if (calcOperator && calcPrevValue !== null) {
+                const current = parseFloat(calcValue);
+                let result;
+                switch(calcOperator) {
+                    case '+': result = calcPrevValue + current; break;
+                    case '-': result = calcPrevValue - current; break;
+                    case '×': result = calcPrevValue * current; break;
+                    case '÷': result = calcPrevValue / current; break;
+                }
+                calcValue = String(result);
+                calcOperator = null;
+                calcPrevValue = null;
+                document.getElementById('calcDisplay').textContent = calcValue;
+            }
+        }
+        
+        function calcClear() {
+            calcValue = '0';
+            calcOperator = null;
+            calcPrevValue = null;
+            document.getElementById('calcDisplay').textContent = calcValue;
+        }
+        
+        // Add blinking cursor animation
+        const style = document.createElement('style');
+        style.textContent = '@keyframes blink { 50% { opacity: 0; } }';
+        document.head.appendChild(style);
+        
+        // Load dock icons
+        window.addEventListener('DOMContentLoaded', () => {
+            const dock = document.getElementById('dock');
+            const dockIcons = [
+                { id: 'finder', name: 'Finder', icon: 'icons/finder.png' },
+                { id: 'terminal', name: 'Terminal', icon: 'icons/terminal.png' },
+                { id: 'browser', name: 'Browser', icon: 'icons/browser.png' },
+                { id: 'editor', name: 'Text Editor', icon: 'icons/editor.png' },
+                { id: 'calculator', name: 'Calculator', icon: 'icons/calculator.png' },
+                { id: 'settings', name: 'Settings', icon: 'icons/settings.png' },
+                { id: 'music', name: 'Music', icon: 'icons/music.png' },
+                { divider: true },
+                { id: 'about', name: 'About kamalOS', icon: 'icons/about.png' },
+            ];
+            
+            dockIcons.forEach(item => {
+                if (item.divider) {
+                    const divider = document.createElement('div');
+                    divider.className = 'dock-divider';
+                    dock.appendChild(divider);
+                } else {
+                    const icon = document.createElement('div');
+                    icon.className = 'dock-icon';
+                    icon.setAttribute('data-window', item.id);
+                    icon.setAttribute('title', item.name);
+                    icon.onclick = () => openWindow(item.id);
+                    
+                    const img = document.createElement('img');
+                    img.src = item.icon;
+                    img.alt = item.name;
+                    img.onerror = () => {
+                        // If image fails to load, show colored square as fallback
+                        icon.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                        icon.innerHTML = `<span style="color: white; font-size: 24px; font-weight: bold;">${item.name[0]}</span>`;
+                    };
+                    
+                    icon.appendChild(img);
+                    dock.appendChild(icon);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

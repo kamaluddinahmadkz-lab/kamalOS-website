@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kamalOS - A Beautiful Linux Distribution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #667eea;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 56px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 24px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 18px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .features {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature h3 {
+            color: #667eea;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .feature p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        footer {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 80px;
+        }
+        
+        .version {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">kamalOS</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="support.html">Support</a></li>
+                <li><a href="bug-report.html">Report Bug</a></li>
+                <li><a href="privacy.html">Privacy</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <h1>Welcome to kamalOS</h1>
+        <p>A beautiful Linux distribution with macOS Big Sur design</p>
+        <a href="https://github.com/kamaluddinahmadkz-lab/kamalOS-website/releases/download/v1.0/kamalOS-1.0-live.iso" class="cta-button">Download kamalOS 1.0 ISO</a>
+        <a href="kamalos-desktop.html" class="cta-button" style="background: transparent; border: 3px solid white; margin-left: 20px;">Try kamalOS Online</a>
+        <div class="version">Version 1.0 - Big Sur Edition</div>
+    </section>
+    
+    <section class="features">
+        <div class="feature">
+            <h3>🎨 Beautiful Design</h3>
+            <p>Experience the stunning macOS Big Sur interface on Linux. Blurry glass effects, smooth animations, and a gorgeous dock.</p>
+        </div>
+        
+        <div class="feature">
+            <h3>⚡ Custom Kernel</h3>
+            <p>Built with a custom-compiled Linux kernel (6.8.0-kamalOS) for optimal performance and control.</p>
+        </div>
+        
+        <div class="feature">
+            <h3>🔒 Secure & Private</h3>
+            <p>Based on Ubuntu 24.04 LTS with all the security and stability you expect from Linux.</p>
+        </div>
+        
+        <div class="feature">
+            <h3>🚀 Fast & Efficient</h3>
+            <p>Optimized for performance while maintaining the beautiful Big Sur aesthetic.</p>
+        </div>
+        
+        <div class="feature">
+            <h3>🎯 Easy to Use</h3>
+            <p>Familiar macOS-like interface makes it easy for anyone to use Linux.</p>
+        </div>
+        
+        <div class="feature">
+            <h3>💎 Open Source</h3>
+            <p>Free and open source software. Built by the community, for the community.</p>
+        </div>
+    </section>
+    
+    <footer>
+        <p>&copy; 2026 kamalOS Project. Built with ❤️ by Kamal.</p>
+        <p>Based on Ubuntu 24.04 LTS | Linux Kernel 6.8.0-kamalOS</p>
+    </footer>
+</body>
+</html>
