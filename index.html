@@ -3,210 +3,429 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kamalOS - A Beautiful Linux Distribution</title>
+    <title>kamalOS 1.1 - A Beautiful Linux Distribution</title>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --purple: #764ba2;
+            --blue: #667eea;
+            --grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --text: #1d1d1f;
+            --muted: #6e6e73;
+            --surface: #fff;
+            --bg: #f5f5f7;
         }
-        
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--grad);
+            color: var(--text);
             line-height: 1.6;
+            overflow-x: hidden;
         }
-        
+
+        /* ── Navbar ── */
         header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            padding: 16px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
         }
-        
+
         nav {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
+            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
         }
-        
+
         .logo {
-            font-size: 28px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-size: 24px;
+            font-weight: 800;
+            background: var(--grad);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
         }
-        
+
         nav ul {
             display: flex;
             list-style: none;
-            gap: 30px;
+            gap: 32px;
         }
-        
+
         nav a {
+            color: var(--text);
             text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s;
         }
-        
-        nav a:hover {
-            color: #667eea;
-        }
-        
+
+        nav a:hover { color: var(--blue); }
+
+        /* ── Hero ── */
         .hero {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: 100px 20px;
+            padding: 100px 24px;
             color: white;
+            position: relative;
+            overflow: hidden;
         }
-        
-        .hero h1 {
-            font-size: 56px;
-            margin-bottom: 20px;
-            font-weight: 700;
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+            pointer-events: none;
         }
-        
-        .hero p {
-            font-size: 24px;
-            margin-bottom: 40px;
-            opacity: 0.9;
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+            pointer-events: none;
         }
-        
-        .cta-button {
+
+        .hero-badge {
             display: inline-block;
-            padding: 15px 40px;
-            background: white;
-            color: #667eea;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 18px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin: 10px;
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-        
-        .cta-button.secondary {
-            background: transparent;
-            border: 3px solid white;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
             color: white;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            animation: fadeDown 0.6s ease both;
         }
-        
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            animation: fadeDown 0.6s ease 0.1s both;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            opacity: 0.9;
+            max-width: 540px;
+            margin-bottom: 44px;
+            animation: fadeDown 0.6s ease 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeDown 0.6s ease 0.3s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 15px 36px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.25s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--blue);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.7);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-3px);
+        }
+
+        .version-tag {
+            margin-top: 32px;
+            color: rgba(255,255,255,0.75);
+            font-size: 0.88rem;
+            animation: fadeDown 0.6s ease 0.4s both;
+        }
+
+        .version-tag span {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 5px 16px;
+            border-radius: 20px;
+        }
+
+        /* ── Container ── */
         .container {
             max-width: 900px;
-            margin: 80px auto;
-            padding: 0 20px;
+            margin: 0 auto;
+            padding: 0 24px 100px;
         }
-        
+
         .section-title {
-            font-size: 42px;
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            font-weight: 800;
             color: white;
             text-align: center;
-            margin-bottom: 50px;
+            margin: 70px 0 40px;
         }
-        
-        .step-card {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        
-        .step-card h3 {
-            color: #667eea;
-            font-size: 24px;
+
+        /* ── Features ── */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
             margin-bottom: 20px;
         }
-        
-        .step-card ol, .step-card ul {
-            margin-left: 20px;
-            line-height: 2;
+
+        .feature-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        
-        .step-card li {
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon { font-size: 2rem; margin-bottom: 12px; }
+
+        .feature-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 0.88rem;
+            color: var(--muted);
+        }
+
+        /* ── Steps ── */
+        .step-card {
+            background: rgba(255,255,255,0.97);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 22px;
+            align-items: flex-start;
+            transition: transform 0.2s;
+        }
+
+        .step-card:hover { transform: translateY(-3px); }
+
+        .step-num {
+            background: var(--grad);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
             margin-bottom: 10px;
         }
-        
+
+        .step-content p, .step-content li {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .step-content ol, .step-content ul {
+            padding-left: 20px;
+            line-height: 2.1;
+        }
+
+        .step-content strong { color: var(--text); }
+
+        .step-content a.dl-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 14px;
+            padding: 10px 24px;
+            background: var(--grad);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 14px rgba(102,126,234,0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .step-content a.dl-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.5);
+        }
+
         .warning-box {
-            background: #fff3cd;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
+            background: #fff8e1;
             border-left: 4px solid #ffc107;
-        }
-        
-        .warning-box p {
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-top: 16px;
             color: #856404;
-            margin: 0;
+            font-size: 0.9rem;
         }
-        
+
+        /* ── Success ── */
         .success-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px;
+            background: var(--grad);
             border-radius: 20px;
-            margin-bottom: 30px;
+            padding: 36px;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 40px rgba(102,126,234,0.3);
         }
-        
+
         .success-card h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
             color: white;
-            font-size: 28px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
-        
-        .success-card p, .success-card ol, .success-card li {
-            color: white;
+
+        .success-card p, .success-card li {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.95rem;
+            line-height: 2.1;
         }
-        
+
+        .success-card ol { padding-left: 20px; }
+
         .success-highlight {
-            background: rgba(255,255,255,0.2);
-            padding: 20px;
-            border-radius: 10px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 18px;
             margin-top: 20px;
-        }
-        
-        footer {
-            background: rgba(0,0,0,0.8);
             color: white;
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 80px;
+            font-size: 1rem;
+            font-weight: 600;
         }
-        
-        .version {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 8px 20px;
+
+        /* ── Help ── */
+        .help-card {
+            background: rgba(255,255,255,0.97);
             border-radius: 20px;
-            margin-top: 15px;
-            font-size: 14px;
+            padding: 32px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        .help-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 14px;
+        }
+
+        .help-card ul { padding-left: 20px; }
+        .help-card li { margin-bottom: 10px; }
+
+        .help-card a {
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .help-card a:hover { text-decoration: underline; }
+
+        /* ── Footer ── */
+        footer {
+            background: rgba(0,0,0,0.75);
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 36px 24px;
+            font-size: 0.9rem;
+        }
+
+        footer p { margin-bottom: 6px; }
+
+        /* ── Animations ── */
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            nav ul { gap: 16px; font-size: 0.85rem; }
+            .step-card { flex-direction: column; gap: 12px; }
         }
     </style>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VTX00V30M1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VTX00V30M1');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VTX00V30M1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-VTX00V30M1');
+    </script>
 </head>
 <body>
+
     <header>
         <nav>
-            <div class="logo">kamalOS</div>
+            <a href="index.html" class="logo">kamalOS</a>
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="support.html">Support</a></li>
@@ -215,124 +434,154 @@
             </ul>
         </nav>
     </header>
-    
+
+    <!-- Hero -->
     <section class="hero">
-        <h1>Welcome to kamalOS</h1>
-        <p>A beautiful Linux distribution with macOS Big Sur design</p>
-        <a href="https://mega.nz/file/z8QVRbqJ#mrskH0SGbmoYut1GXVmfTYkoCszqZcZFo4_kJbrJ86A" class="cta-button" target="_blank">Download kamalOS 1.0 ISO</a>
-        <a href="kamalos-desktop.html" class="cta-button secondary">Try kamalOS Online</a>
-        <div class="version">Version 1.0 - Big Sur Edition</div>
+        <div class="hero-badge">🆕 New Release</div>
+        <h1>Welcome to kamalOS 1.1</h1>
+        <p>A beautiful Linux distribution with macOS design — now better than ever.</p>
+        <div class="hero-buttons">
+            <a href="#" class="btn btn-primary">⬇ Download kamalOS 1.1 ISO</a>
+            <a href="kamalos-desktop.html" class="btn btn-secondary">▶ Try Online</a>
+        </div>
+        <div class="version-tag">
+            <span>Version 1.1 — Tahoe Edition</span>
+        </div>
     </section>
-    
+
     <div class="container">
-        <h2 class="section-title">📥 How to Install kamalOS</h2>
-        
-        <div class="step-card">
-            <h3>Step 1: Download the ISO</h3>
-            <p>Click the "Download kamalOS 1.0 ISO" button above to download <strong>kamalOS-1.0.iso</strong> (approximately 3-6 GB)</p>
-            <p style="color: #999; font-size: 14px; margin-top: 10px;">Save it to your Downloads folder</p>
-        </div>
-        
-        <div class="step-card">
-            <h3>Step 2: Download VirtualBox</h3>
-            <p style="margin-bottom: 15px;">Download and install VirtualBox (free virtualization software):</p>
-            <a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" style="display: inline-block; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 8px; margin-top: 10px; font-weight: 600;">Download VirtualBox</a>
-            <p style="color: #999; font-size: 14px; margin-top: 15px;">Choose the version for your operating system (Windows, macOS, or Linux)</p>
-        </div>
-        
-        <div class="step-card">
-            <h3>Step 3: Create a Virtual Machine</h3>
-            <ol>
-                <li>Open VirtualBox</li>
-                <li>Click <strong>"New"</strong> to create a new VM</li>
-                <li>Name: <strong>kamalOS</strong></li>
-                <li>Type: <strong>Linux</strong></li>
-                <li>Version: <strong>Ubuntu (64-bit)</strong></li>
-                <li>Memory: <strong>4 GB (4096 MB)</strong> or more</li>
-                <li>Hard disk: <strong>Create a virtual hard disk now (25 GB)</strong></li>
-                <li>Click <strong>"Create"</strong></li>
-            </ol>
-        </div>
-        
-        <div class="step-card">
-            <h3>Step 4: Attach the ISO</h3>
-            <ol>
-                <li>Select your kamalOS VM in VirtualBox</li>
-                <li>Click <strong>"Settings"</strong></li>
-                <li>Go to <strong>"Storage"</strong></li>
-                <li>Click the empty CD icon under "Controller: IDE"</li>
-                <li>Click the CD icon on the right → <strong>"Choose a disk file"</strong></li>
-                <li>Select your downloaded <strong>kamalOS-1.0.iso</strong></li>
-                <li>Click <strong>"OK"</strong></li>
-            </ol>
-        </div>
-        
-        <div class="step-card">
-            <h3>Step 5: Start kamalOS</h3>
-            <ol>
-                <li>Select your kamalOS VM</li>
-                <li>Click the green <strong>"Start"</strong> button</li>
-                <li>The VM will boot from the ISO</li>
-            </ol>
-            <div class="warning-box">
-                <p><strong>⚠️ Don't panic!</strong> You'll see "Ubuntu" during the boot process. This is completely normal - Ubuntu is part of kamalOS. The customization happens after installation.</p>
+
+        <!-- Features -->
+        <h2 class="section-title">✨ What's New in 1.1</h2>
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>macOS Tahoe Design</h3>
+                <p>Beautiful macOS-inspired look with rounded dock, blur effects and smooth animations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Custom Icons</h3>
+                <p>Hand-picked macOS style icons for a consistent and beautiful desktop experience.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3>Blur Effects</h3>
+                <p>Stunning blur effects throughout the desktop powered by Blur My Shell.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>Fast & Stable</h3>
+                <p>Built on Ubuntu 24.04 LTS — rock solid with the latest hardware support.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🪄</div>
+                <h3>Magic Lamp Effect</h3>
+                <p>Smooth macOS-like magic lamp animation when minimizing windows.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Privacy First</h3>
+                <p>No telemetry, no tracking. Just a clean, private Linux experience.</p>
             </div>
         </div>
-        
+
+        <!-- Install Steps -->
+        <h2 class="section-title">📥 How to Install</h2>
+
         <div class="step-card">
-            <h3>Step 6: Choose "Try or Install Ubuntu"</h3>
-            <p style="margin-bottom: 15px;">When you see the boot menu:</p>
-            <ol>
-                <li>Select <strong>"Try or Install Ubuntu"</strong></li>
-                <li>Press <strong>Enter</strong></li>
-                <li>Wait for it to load (this takes 1-2 minutes)</li>
-            </ol>
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <h3>Download the ISO</h3>
+                <p>Click the download button above to get <strong>kamalOS-1.1.iso</strong> (approximately 5-6 GB). Save it to your Downloads folder.</p>
+            </div>
         </div>
-        
+
         <div class="step-card">
-            <h3>Step 7: Install Ubuntu (which becomes kamalOS)</h3>
-            <ol>
-                <li>Click <strong>"Install Ubuntu"</strong> on the desktop</li>
-                <li>Choose your language</li>
-                <li>Select <strong>"Normal installation"</strong></li>
-                <li>Check <strong>"Download updates while installing"</strong></li>
-                <li>Choose <strong>"Erase disk and install Ubuntu"</strong><br>
-                    <span style="color: #999; font-size: 14px;">(Don't worry, this only affects the virtual disk, not your real computer)</span>
-                </li>
-                <li>Create your username and password</li>
-                <li>Wait for installation (10-20 minutes)</li>
-                <li>When prompted, click <strong>"Restart Now"</strong></li>
-            </ol>
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <h3>Download VirtualBox</h3>
+                <p>Download and install VirtualBox — free software that lets you run kamalOS inside your current OS.</p>
+                <a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" class="dl-btn">Download VirtualBox →</a>
+            </div>
         </div>
-        
+
+        <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <h3>Create a Virtual Machine</h3>
+                <ol>
+                    <li>Open VirtualBox and click <strong>New</strong></li>
+                    <li>Name: <strong>kamalOS 1.1</strong></li>
+                    <li>Type: <strong>Linux</strong> → Version: <strong>Ubuntu (64-bit)</strong></li>
+                    <li>Memory: <strong>4 GB (4096 MB)</strong> or more</li>
+                    <li>Hard disk: <strong>25 GB</strong> (create new)</li>
+                    <li>Click <strong>Create</strong></li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-content">
+                <h3>Attach the ISO</h3>
+                <ol>
+                    <li>Select your kamalOS VM → click <strong>Settings</strong></li>
+                    <li>Go to <strong>Storage</strong></li>
+                    <li>Click the empty CD icon → <strong>Choose a disk file</strong></li>
+                    <li>Select your downloaded <strong>kamalOS-1.1.iso</strong></li>
+                    <li>Click <strong>OK</strong></li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <div class="step-num">5</div>
+            <div class="step-content">
+                <h3>Boot & Install</h3>
+                <ol>
+                    <li>Click the green <strong>Start</strong> button</li>
+                    <li>Select <strong>Try or Install Ubuntu</strong> and press Enter</li>
+                    <li>Click <strong>Install Ubuntu</strong> on the desktop</li>
+                    <li>Choose <strong>Normal installation</strong></li>
+                    <li>Select <strong>Erase disk and install</strong> (only affects virtual disk)</li>
+                    <li>Create your username and password</li>
+                    <li>Wait 10–20 minutes for installation to complete</li>
+                </ol>
+                <div class="warning-box">
+                    ⚠️ <strong>Don't panic!</strong> You'll see "Ubuntu" during boot — that's completely normal. kamalOS is built on top of Ubuntu.
+                </div>
+            </div>
+        </div>
+
         <div class="success-card">
-            <h3>🎉 Step 8: Welcome to kamalOS!</h3>
-            <p style="margin-bottom: 15px;">After installation completes and the system reboots:</p>
+            <h3>🎉 Step 6 — Welcome to kamalOS 1.1!</h3>
             <ol>
+                <li>After installation, click <strong>Restart Now</strong></li>
                 <li>VirtualBox will automatically remove the ISO</li>
-                <li>The system will reboot</li>
                 <li>Log in with the username and password you created</li>
-                <li><strong>You're now running kamalOS!</strong></li>
+                <li><strong>You're now running kamalOS 1.1!</strong></li>
             </ol>
             <div class="success-highlight">
-                <p style="font-size: 18px; margin: 0;"><strong>✨ Enjoy your beautiful kamalOS system with macOS Big Sur design, custom kernel, blur effects, and all the amazing features!</strong></p>
+                ✨ Enjoy your beautiful kamalOS system with macOS Tahoe design, blur effects, magic lamp animations and more!
             </div>
         </div>
-        
-        <div class="step-card">
+
+        <div class="help-card">
             <h3>💡 Need Help?</h3>
-            <p style="margin-bottom: 15px;">Having trouble? Check out these resources:</p>
             <ul>
-                <li><a href="support.html" style="color: #667eea; text-decoration: none; font-weight: 600;">Support Page</a> - FAQ and troubleshooting</li>
-                <li><a href="bug-report.html" style="color: #667eea; text-decoration: none; font-weight: 600;">Report a Bug</a> - Found an issue? Let us know!</li>
-                <li><a href="kamalos-desktop.html" style="color: #667eea; text-decoration: none; font-weight: 600;">Try Online Demo</a> - See kamalOS in action before installing</li>
+                <li><a href="support.html">Support Page</a> — FAQ and troubleshooting</li>
+                <li><a href="bug-report.html">Report a Bug</a> — Found an issue? Let us know!</li>
+                <li><a href="kamalos-desktop.html">Try Online Demo</a> — See kamalOS in action</li>
             </ul>
         </div>
+
     </div>
-    
+
     <footer>
         <p>&copy; 2026 kamalOS Project. Built with ❤️ by Kamal, age 11.</p>
         <p>Based on Ubuntu 24.04 LTS | Linux Kernel 6.8.0-kamalOS</p>
     </footer>
+
 </body>
 </html>
