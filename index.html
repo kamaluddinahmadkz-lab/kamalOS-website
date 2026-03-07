@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kamalOS 1.1 - A Beautiful Linux Distribution</title>
+    <title>kamalOS Lite 1.0 - A Beautiful Lightweight Linux Distribution</title>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -251,6 +251,41 @@
             color: var(--muted);
         }
 
+        /* ── Tabs ── */
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            padding: 12px 32px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: 2px solid rgba(255,255,255,0.7);
+            background: transparent;
+            color: white;
+            transition: all 0.25s;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--blue);
+            border-color: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
         /* ── Steps ── */
         .step-card {
             background: rgba(255,255,255,0.97);
@@ -328,6 +363,19 @@
             margin-top: 16px;
             color: #856404;
             font-size: 0.9rem;
+        }
+
+        /* ── Code block ── */
+        .code-block {
+            background: #1d1d1f;
+            color: #a8ff78;
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.88rem;
+            margin-top: 12px;
+            overflow-x: auto;
+            line-height: 1.8;
         }
 
         /* ── Success ── */
@@ -410,6 +458,7 @@
         @media (max-width: 600px) {
             nav ul { gap: 16px; font-size: 0.85rem; }
             .step-card { flex-direction: column; gap: 12px; }
+            .tabs { flex-direction: column; align-items: center; }
         }
     </style>
     <!-- Google tag (gtag.js) -->
@@ -426,58 +475,52 @@
     <header>
         <nav>
             <a href="index.html" class="logo">kamalOS</a>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="support.html">Support</a></li>
-                <li><a href="bug-report.html">Report Bug</a></li>
-                <li><a href="privacy.html">Privacy</a></li>
-            </ul>
+
         </nav>
     </header>
 
     <!-- Hero -->
     <section class="hero">
-        <div class="hero-badge">🆕 New Release</div>
-        <h1>Welcome to kamalOS 1.1</h1>
-        <p>A beautiful Linux distribution with macOS Tahoe design — now better than ever.</p>
+        <div class="hero-badge">🪶 Lightweight Edition</div>
+        <h1>Welcome to kamalOS Lite 1.0</h1>
+        <p>A beautiful macOS Tahoe-inspired Linux distribution — designed for older and low-spec PCs.</p>
         <div class="hero-buttons">
-            <a href="https://mega.nz/file/f84DHLrK#cJfLE7sMQOTWVLsNIXGW7hIzx7Tsv_cQF69eD97tL2Q" class="btn btn-primary" target="_blank">⬇ Download kamalOS 1.1 ISO</a>
-            <a href="kamalos-desktop.html" class="btn btn-secondary">▶ Try Online</a>
+            <a href="https://mega.nz/file/zx4hHSpI#lF9ZWdk-sxC7HWP1w9_hAubXucWMLf5LbgdM7Fa8Ow8" class="btn btn-primary" target="_blank">⬇ Download kamalOS Lite 1.0</a>
         </div>
         <div class="version-tag">
-            <span>Version 1.1 — Tahoe Edition</span>
+            <span>Version 1.0 — Lite Edition</span>
         </div>
     </section>
 
     <div class="container">
 
         <!-- Features -->
-        <h2 class="section-title">✨ What's New in 1.1</h2>
+        <h2 class="section-title">✨ What's in Lite 1.0</h2>
         <div class="features">
             <div class="feature-card">
-                <div class="feature-icon"></div>
-                <h3>macOS Big Sur Design</h3>
-                <p>Beautiful macOS Tahoe-inspired look with rounded dock, blur effects and smooth animations.</p>
+                <div class="feature-icon">🪶</div>
+                <h3>Lightweight</h3>
+                <p>Built on Lubuntu 22.04 LTS — runs smoothly on PCs as old as 2010 with 1GB RAM.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🎨</div>
-                <h3>Custom Icons</h3>
-                <p>Hand-picked macOS style icons for a consistent and beautiful desktop experience.</p>
+                <h3>MacTahoe Theme</h3>
+                <p>Beautiful macOS Tahoe-inspired GTK theme pre-installed and ready out of the box.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">✨</div>
-                <h3>Blur Effects</h3>
-                <p>Stunning blur effects throughout the desktop powered by Blur My Shell.</p>
+                <h3>Custom Icons</h3>
+                <p>MacTahoe icon theme pre-installed for a consistent and beautiful desktop experience.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🚀</div>
                 <h3>Fast & Stable</h3>
-                <p>Built on Ubuntu 24.04 LTS — rock solid with the latest hardware support.</p>
+                <p>Built on Ubuntu 22.04 LTS base — rock solid with broad hardware support.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🪄</div>
-                <h3>Magic Lamp Effect</h3>
-                <p>Smooth macOS-like magic lamp animation when minimizing windows.</p>
+                <div class="feature-icon">🖱️</div>
+                <h3>WhiteSur Cursor</h3>
+                <p>macOS-style cursor theme included for a complete and polished look.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🔒</div>
@@ -489,99 +532,187 @@
         <!-- Install Steps -->
         <h2 class="section-title">📥 How to Install</h2>
 
+        <!-- Step 1: Download -->
         <div class="step-card">
             <div class="step-num">1</div>
             <div class="step-content">
                 <h3>Download the ISO</h3>
-                <p>Click the download button above to get <strong>kamalOS-1.1.iso</strong> (approximately 5-6 GB). Save it to your Downloads folder.</p>
+                <p>Click the download button above to get <strong>kamalOS-lite-1.0.iso</strong>. Save it to your Downloads folder.</p>
             </div>
         </div>
 
-        <div class="step-card">
-            <div class="step-num">2</div>
-            <div class="step-content">
-                <h3>Download VirtualBox</h3>
-                <p>Download and install VirtualBox — free software that lets you run kamalOS inside your current OS.</p>
-                <a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" class="dl-btn">Download VirtualBox →</a>
-            </div>
+        <!-- Tab selector -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('virtualbox')">📦 VirtualBox</button>
+            <button class="tab-btn" onclick="switchTab('qemu')">⚙️ QEMU</button>
         </div>
 
-        <div class="step-card">
-            <div class="step-num">3</div>
-            <div class="step-content">
-                <h3>Create a Virtual Machine</h3>
-                <ol>
-                    <li>Open VirtualBox and click <strong>New</strong></li>
-                    <li>Name: <strong>kamalOS 1.1</strong></li>
-                    <li>Type: <strong>Linux</strong> → Version: <strong>Ubuntu (64-bit)</strong></li>
-                    <li>Memory: <strong>4 GB (4096 MB)</strong> or more</li>
-                    <li>Hard disk: <strong>25 GB</strong> (create new)</li>
-                    <li>Click <strong>Create</strong></li>
-                </ol>
-            </div>
-        </div>
+        <!-- VirtualBox Tab -->
+        <div class="tab-content active" id="tab-virtualbox">
 
-        <div class="step-card">
-            <div class="step-num">4</div>
-            <div class="step-content">
-                <h3>Attach the ISO</h3>
-                <ol>
-                    <li>Select your kamalOS VM → click <strong>Settings</strong></li>
-                    <li>Go to <strong>Storage</strong></li>
-                    <li>Click the empty CD icon → <strong>Choose a disk file</strong></li>
-                    <li>Select your downloaded <strong>kamalOS-1.1.iso</strong></li>
-                    <li>Click <strong>OK</strong></li>
-                </ol>
-            </div>
-        </div>
-
-        <div class="step-card">
-            <div class="step-num">5</div>
-            <div class="step-content">
-                <h3>Boot & Install</h3>
-                <ol>
-                    <li>Click the green <strong>Start</strong> button</li>
-                    <li>Select <strong>Try or Install Ubuntu</strong> and press Enter</li>
-                    <li>Click <strong>Install Ubuntu</strong> on the desktop</li>
-                    <li>Choose <strong>Normal installation</strong></li>
-                    <li>Select <strong>Erase disk and install</strong> (only affects virtual disk)</li>
-                    <li>Create your username and password</li>
-                    <li>Wait 10–20 minutes for installation to complete</li>
-                </ol>
-                <div class="warning-box">
-                    ⚠️ <strong>Don't panic!</strong> You'll see "Ubuntu" during boot — that's completely normal. kamalOS is built on top of Ubuntu.
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h3>Download VirtualBox</h3>
+                    <p>Download and install VirtualBox — free software that lets you run kamalOS Lite inside your current OS.</p>
+                    <a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" class="dl-btn">Download VirtualBox →</a>
                 </div>
             </div>
-        </div>
 
-        <div class="success-card">
-            <h3>🎉 Step 6 — Welcome to kamalOS 1.1!</h3>
-            <ol>
-                <li>After installation, click <strong>Restart Now</strong></li>
-                <li>VirtualBox will automatically remove the ISO</li>
-                <li>Log in with the username and password you created</li>
-                <li><strong>You're now running kamalOS 1.1!</strong></li>
-            </ol>
-            <div class="success-highlight">
-                ✨ Enjoy your beautiful kamalOS system with macOS Tahoe design, blur effects, magic lamp animations and more!
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h3>Create a Virtual Machine</h3>
+                    <ol>
+                        <li>Open VirtualBox and click <strong>New</strong></li>
+                        <li>Name: <strong>kamalOS Lite 1.0</strong></li>
+                        <li>Type: <strong>Linux</strong> → Version: <strong>Ubuntu (64-bit)</strong></li>
+                        <li>Memory: <strong>2 GB (2048 MB)</strong> or more</li>
+                        <li>Hard disk: <strong>20 GB</strong> (create new)</li>
+                        <li>Click <strong>Create</strong></li>
+                    </ol>
+                </div>
             </div>
+
+            <div class="step-card">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <h3>Attach the ISO</h3>
+                    <ol>
+                        <li>Select your kamalOS Lite VM → click <strong>Settings</strong></li>
+                        <li>Go to <strong>Storage</strong></li>
+                        <li>Click the empty CD icon → <strong>Choose a disk file</strong></li>
+                        <li>Select your downloaded <strong>kamalOS-lite-1.0.iso</strong></li>
+                        <li>Click <strong>OK</strong></li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">5</div>
+                <div class="step-content">
+                    <h3>Boot & Install</h3>
+                    <ol>
+                        <li>Click the green <strong>Start</strong> button</li>
+                        <li>Select <strong>Try or Install Lubuntu</strong> and press Enter</li>
+                        <li>Click <strong>Install Lubuntu</strong> on the desktop</li>
+                        <li>Choose <strong>Normal installation</strong></li>
+                        <li>Select <strong>Erase disk and install</strong> (only affects virtual disk)</li>
+                        <li>Create your username and password</li>
+                        <li>Wait 10–15 minutes for installation to complete</li>
+                    </ol>
+                    <div class="warning-box">
+                        ⚠️ <strong>Don't panic!</strong> You'll see "Lubuntu" during boot — that's completely normal. kamalOS Lite is built on top of Lubuntu.
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-card">
+                <h3>🎉 Step 6 — Welcome to kamalOS Lite 1.0!</h3>
+                <ol>
+                    <li>After installation, click <strong>Restart Now</strong></li>
+                    <li>VirtualBox will automatically remove the ISO</li>
+                    <li>Log in with the username and password you created</li>
+                    <li><strong>You're now running kamalOS Lite 1.0!</strong></li>
+                </ol>
+                <div class="success-highlight">
+                    ✨ Enjoy your beautiful kamalOS Lite system with macOS Tahoe design, custom icons, and smooth performance on older hardware!
+                </div>
+            </div>
+
         </div>
 
-        <div class="help-card">
-            <h3>💡 Need Help?</h3>
-            <ul>
-                <li><a href="support.html">Support Page</a> — FAQ and troubleshooting</li>
-                <li><a href="bug-report.html">Report a Bug</a> — Found an issue? Let us know!</li>
-                <li><a href="kamalos-desktop.html">Try Online Demo</a> — See kamalOS in action</li>
-            </ul>
+        <!-- QEMU Tab -->
+        <div class="tab-content" id="tab-qemu">
+
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h3>Install QEMU</h3>
+                    <p>Install QEMU on your system using the command below.</p>
+                    <p style="margin-top:10px;"><strong>On Ubuntu/Debian:</strong></p>
+                    <div class="code-block">sudo apt install qemu-system-x86 qemu-utils</div>
+                    <p style="margin-top:10px;"><strong>On Windows:</strong></p>
+                    <a href="https://www.qemu.org/download/#windows" target="_blank" class="dl-btn">Download QEMU for Windows →</a>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h3>Create a Virtual Disk</h3>
+                    <p>Open a terminal and run this command to create a 20GB virtual hard disk:</p>
+                    <div class="code-block">qemu-img create -f qcow2 kamalOS-lite.qcow2 20G</div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <h3>Boot the ISO</h3>
+                    <p>Run this command to boot kamalOS Lite from the ISO:</p>
+                    <div class="code-block">qemu-system-x86_64 \<br>  -m 2048 \<br>  -cdrom kamalOS-lite-1.0.iso \<br>  -hda kamalOS-lite.qcow2 \<br>  -boot d \<br>  -enable-kvm \<br>  -cpu host \<br>  -smp 2</div>
+                    <div class="warning-box">
+                        ⚠️ Remove <strong>-enable-kvm</strong> if you are on Windows or get an error about KVM.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">5</div>
+                <div class="step-content">
+                    <h3>Install Lubuntu</h3>
+                    <ol>
+                        <li>Select <strong>Try or Install Lubuntu</strong> and press Enter</li>
+                        <li>Click <strong>Install Lubuntu</strong> on the desktop</li>
+                        <li>Choose <strong>Normal installation</strong></li>
+                        <li>Select <strong>Erase disk and install</strong> (only affects virtual disk)</li>
+                        <li>Create your username and password</li>
+                        <li>Wait 10–15 minutes for installation to complete</li>
+                        <li>Click <strong>Restart Now</strong> when done</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-num">6</div>
+                <div class="step-content">
+                    <h3>Boot Without the ISO</h3>
+                    <p>After installation, boot from the virtual disk instead of the ISO:</p>
+                    <div class="code-block">qemu-system-x86_64 \<br>  -m 2048 \<br>  -hda kamalOS-lite.qcow2 \<br>  -enable-kvm \<br>  -cpu host \<br>  -smp 2</div>
+                </div>
+            </div>
+
+            <div class="success-card">
+                <h3>🎉 Welcome to kamalOS Lite 1.0!</h3>
+                <ol>
+                    <li>Log in with the username and password you created</li>
+                    <li><strong>You're now running kamalOS Lite 1.0 on QEMU!</strong></li>
+                </ol>
+                <div class="success-highlight">
+                    ✨ Enjoy your beautiful kamalOS Lite system with macOS Tahoe design, custom icons, and smooth performance on older hardware!
+                </div>
+            </div>
+
         </div>
+
+
 
     </div>
 
     <footer>
         <p>&copy; 2026 kamalOS Project. Built with ❤️ by Kamal, age 11.</p>
-        <p>Based on Ubuntu 24.04 LTS | Linux Kernel 6.8.0-kamalOS</p>
+        <p>Based on Lubuntu 22.04 LTS | Lite Edition</p>
     </footer>
+
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
 
 </body>
 </html>
